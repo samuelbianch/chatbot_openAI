@@ -1,6 +1,5 @@
 from flask import Flask
-import os
-import openai
+from openai import OpenAI
 import dotenv
 from time import sleep
 from helpers import *
@@ -9,18 +8,18 @@ app = Flask(__name__)
 app.secret_key = 'alura'
     
 dotenv.load_dotenv()
-
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI()
 
 from views import *
 
 dados_ecommerce = carrega('dados_ecommerce.txt')
+
 def bot(prompt,historico):
     maxima_repeticao = 1
     repeticao = 0
     while True:
         try:
-            model='gpt-4'
+            model='gpt-3.5-turbo'
             prompt_do_sistema = f"""
             Você é um chatbot de atendimento a clientes de um e-commerce.
             Você não deve responder perguntas que não sejam dados do ecommerce informado!
@@ -29,7 +28,7 @@ def bot(prompt,historico):
             ## Historico:
             {historico}
             """
-            response = openai.ChatCompletion.create(
+            response = client.chat.completions.create(
                 messages=[
                     {
                         "role": "system",

@@ -1,4 +1,4 @@
-from app import app, bot
+from app import bot, app
 from flask import render_template, request, Response,session,flash,redirect, url_for
 import os 
 from helpers import *
@@ -25,7 +25,8 @@ def trata_resposta(prompt,historico,nome_do_arquivo):
     resposta_parcial = ''
     historico_resumido = criando_resumo(historico)
     for resposta in bot(prompt,historico_resumido):
-        pedaco_da_resposta = resposta.choices[0].delta.get('content','')
+        if resposta.choices[0].delta.content is not None:
+            pedaco_da_resposta = resposta.choices[0].delta.content
         if len(pedaco_da_resposta):
             resposta_parcial += pedaco_da_resposta
             yield pedaco_da_resposta 

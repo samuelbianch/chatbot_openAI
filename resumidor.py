@@ -1,13 +1,11 @@
+from openai import OpenAI
 import dotenv
-import os
-import openai
 
 dotenv.load_dotenv()
-
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI()
 
 def resumidor_de_historico(historico):
-    resposta_resumidor = openai.ChatCompletion.create(
+    resposta_resumidor = client.chat.completions.create(
         model='gpt-3.5-turbo',
         messages=[
             {
