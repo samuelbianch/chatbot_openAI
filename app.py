@@ -4,13 +4,11 @@ import dotenv
 from time import sleep
 from helpers import *
 
-app = Flask(__name__)
-app.secret_key = 'alura'
+App = Flask(__name__)
+App.secret_key = 'alura'
     
 dotenv.load_dotenv()
 client = OpenAI()
-
-from views import *
 
 dados_ecommerce = carrega('dados_ecommerce.txt')
 
@@ -21,10 +19,7 @@ def bot(prompt,historico):
         try:
             model='gpt-3.5-turbo'
             prompt_do_sistema = f"""
-            Você é um chatbot de atendimento a clientes de um e-commerce.
-            Você não deve responder perguntas que não sejam dados do ecommerce informado!
-            ## Dados do ecommerce:
-            {dados_ecommerce}
+            
             ## Historico:
             {historico}
             """
@@ -54,5 +49,7 @@ def bot(prompt,historico):
             print('Erro de comunicação com OpenAI:', erro)
             sleep(1)
 
+from views import *
+
 if __name__ == "__main__":
-    app.run(debug = True)
+    App.run(debug = True)
